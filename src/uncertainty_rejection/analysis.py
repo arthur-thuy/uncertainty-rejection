@@ -30,7 +30,6 @@ def get_y_mean_label(y_pred_stack):
     y_label : ndarray
         1D array (`float` type) of shape `(observations,)`.
 
-
     Examples
     --------
     TODO
@@ -69,7 +68,6 @@ def get_pos_neg_probs(y_pred_pos, axis=-1):
     array([[[0.28, 0.72],
             [0.15, 0.85],
             [0.21, 0.79]],
-
            [[0.12, 0.88],
             [0.22, 0.78],
             [0.08, 0.92]]])
