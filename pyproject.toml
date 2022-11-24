@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "uncertainty_rejection"
-version = "0.1.0"
+version = "0.1.1"
 description = "Analysis of uncertainty estimates for classification with rejection."
 authors = ["Arthur Thuy <arthur.thuy@ugent.be>"]
 maintainers = ["Arthur Thuy <arthur.thuy@ugent.be>"]
@@ -22,13 +22,27 @@ tabulate = ">=0.9.0"
 [tool.poetry.dev-dependencies]
 
 [tool.poetry.group.dev.dependencies]
-jupyter = ">=1.0.0"
-pytest = ">=7.2.0"
-pytest-cov = ">=4.0.0"
-myst-nb = {version = ">=0.17.1", python = ">=3.8"}
-sphinx-autoapi = ">=2.0.0"
-sphinx-rtd-theme = ">=1.1.1"
+jupyter = "^1.0.0"
+pytest = "^7.2.0"
+pytest-cov = "^4.0.0"
+myst-nb = {version = "^0.17.1", python = "^3.8"}
+sphinx-autoapi = "^2.0.0"
+sphinx-rtd-theme = "^1.1.1"
+python-semantic-release = "^7.32.2"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.semantic_release]
+version_variable = "pyproject.toml:version"         # version location
+version_source="tag"                                # read version from tags, not commits
+branch = "main"                                     # branch to make releases of
+changelog_file = "CHANGELOG.md"                     # changelog file
+build_command = "pip install poetry && poetry build"# build dists
+dist_path = "dist/"                                 # where to put dists
+upload_to_release = true                            # auto-create GitHub release
+upload_to_pypi = false                              # don't auto-upload to PyPI
+remove_dist = false                                 # don't remove dists
+patch_without_tag = true                            # patch release by default
+commit_version_number = true                        # commit version number when releasing
