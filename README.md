@@ -1,16 +1,20 @@
 # uncertainty_rejection
 
-Analysis of uncertainty estimates for classification with rejection
+Analysis of uncertainty estimates for classification with rejection.
 
 ## Installation
 
 ```bash
-$ pip install uncertainty_rejection
+$ pip install uncertainty-rejection
 ```
 
-## Usage
+## Documentation
 
-- TODO
+The documentation is deployed to TODO.
+
+## Examples
+
+An example notebook is provided, which can be found in the TODO.
 
 ## Contributing
 
