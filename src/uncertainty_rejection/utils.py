@@ -8,17 +8,9 @@
 # Imports
 # =============================================================================
 # standard library imports
-import os
-import random as rn
+
 # related third party imports
-import numpy as np
 
-
-def seed_everything(seed):
-    """Seed everything."""
-    os.environ['PYTHONHASHSEED'] = '0'
-    np.random.seed(seed)
-    rn.seed(seed)
 
 def kwargs_to_dict(*kwargs):
     """Convert kwarg NoneTypes to dicts.
