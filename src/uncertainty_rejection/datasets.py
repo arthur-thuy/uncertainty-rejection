@@ -37,7 +37,7 @@ def get_file(origin, fname=None, cache_dir=None):
     fname : str, optional
         Name of the file. If `None`, the name of the file at `origin` will be used.
     cache_dir : str, optional
-        Location to store cached files, when None it defaults to the default directory
+        Location to store cached files. If `None` it defaults to the default directory
          `~/.uncertainty_rejection/`.
 
     Returns
@@ -114,7 +114,7 @@ def load_mnist_data(path="mnist.npz"):
     This is a dataset of 60,000 28x28 grayscale images of the 10 digits,
     along with a test set of 10,000 images.
     More info can be found at the
-    [MNIST homepage](http://yann.lecun.com/exdb/mnist/).
+    `MNIST homepage <http://yann.lecun.com/exdb/mnist/>`_.
 
     Function adapted from `keras.datasets.mnist.load_data`.
 
@@ -146,21 +146,18 @@ def load_mnist_data(path="mnist.npz"):
 
     Example
     -------
-    ```python
-    (x_train, y_train), (x_test, y_test) = keras.datasets.mnist.load_data()
+    >>> (x_train, y_train), (x_test, y_test) = keras.datasets.mnist.load_data()
     assert x_train.shape == (60000, 28, 28)
     assert x_test.shape == (10000, 28, 28)
     assert y_train.shape == (60000,)
     assert y_test.shape == (10000,)
-    ```
 
     License
     -------
     Yann LeCun and Corinna Cortes hold the copyright of MNIST dataset,
     which is a derivative work from original NIST datasets.
     MNIST dataset is made available under the terms of the
-    [Creative Commons Attribution-Share Alike 3.0 license.](
-    https://creativecommons.org/licenses/by-sa/3.0/)
+    `Creative Commons Attribution-Share Alike 3.0 license <https://creativecommons.org/licenses/by-sa/3.0/>`_.
     """
     # get download link: https://sites.google.com/site/gdocs2direct/
     origin_folder = ("https://storage.googleapis.com/tensorflow/tf-keras-datasets/")
@@ -180,7 +177,7 @@ def load_notmnist_data(path="not_mnist.npz"):
     This is a dataset of 529,114 28x28 grayscale images of letters A-J,
     along with a test set of 18,724 images.
     More info can be found at the
-    [Not-MNIST homepage](http://yaroslavvb.blogspot.com/2011/09/notmnist-dataset.html).
+    `Not-MNIST homepage <http://yaroslavvb.blogspot.com/2011/09/notmnist-dataset.html>`_.
 
     Function adapted from `keras.datasets.mnist.load_data`.
 
@@ -212,8 +209,7 @@ def load_notmnist_data(path="not_mnist.npz"):
 
     Example
     -------
-    ```python
-    (x_train, y_train), (x_test, y_test) = keras.datasets.mnist.load_data()
+    >>> (x_train, y_train), (x_test, y_test) = keras.datasets.mnist.load_data()
     assert x_train.shape == (529114, 28, 28)
     assert x_test.shape == (18724, 28, 28)
     assert y_train.shape == (529114,)
