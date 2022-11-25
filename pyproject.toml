@@ -6,6 +6,8 @@ authors = ["Arthur Thuy <arthur.thuy@ugent.be>"]
 maintainers = ["Arthur Thuy <arthur.thuy@ugent.be>"]
 license = "Apache License 2.0"
 readme = "README.md"
+repository = "https://github.com/arthur-thuy/uncertainty-rejection"
+documentation = "https://uncertainty-rejection.readthedocs.io/en/latest/"
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Operating System :: OS Independent",

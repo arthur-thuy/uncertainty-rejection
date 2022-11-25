@@ -10,11 +10,11 @@ $ pip install uncertainty-rejection
 
 ## Documentation
 
-The documentation is deployed to TODO.
+The documentation is deployed to [uncertainty-rejection.readthedocs.io](http://uncertainty-rejection.readthedocs.io/).
 
 ## Examples
 
-An example notebook is provided, which can be found in the TODO.
+An example notebook is provided, which can be found in the ["Example usage" section](https://uncertainty-rejection.readthedocs.io/en/latest/example.html) of the documentation.
 
 ## Contributing
 
