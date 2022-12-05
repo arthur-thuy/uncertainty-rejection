@@ -1,5 +1,18 @@
 # uncertainty_rejection
 
+<p align="center">
+<a href="https://pypi.org/project/uncertainty-rejection/">
+        <img alt="PyPI" src="https://img.shields.io/pypi/v/uncertainty_rejection">
+    </a>
+<img src="https://github.com/arthur-thuy/uncertainty-rejection/actions/workflows/ci-cd.yml/badge.svg" />
+<a href='https://uncertainty-rejection.readthedocs.io/en/latest/'>
+        <img src='https://img.shields.io/readthedocs/uncertainty-rejection' alt='Documentation Status' />
+    </a>
+<a href="https://codecov.io/gh/arthur-thuy/uncertainty-rejection" > 
+ <img src="https://codecov.io/gh/arthur-thuy/uncertainty-rejection/branch/main/graph/badge.svg?token=QQ7U6XO64X"/> 
+ </a>
+</p>
+
 Analysis of uncertainty estimates for classification with rejection.
 
 ## Installation
