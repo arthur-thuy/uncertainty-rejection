@@ -146,7 +146,7 @@ def load_mnist_data(path="mnist.npz"):
 
     Example
     -------
-    >>> (x_train, y_train), (x_test, y_test) = keras.datasets.mnist.load_data()
+    >>> (x_train, y_train), (x_test, y_test) = uncertainty_rejection.datasets.load_mnist_data()
     assert x_train.shape == (60000, 28, 28)
     assert x_test.shape == (10000, 28, 28)
     assert y_train.shape == (60000,)
@@ -209,7 +209,7 @@ def load_notmnist_data(path="not_mnist.npz"):
 
     Example
     -------
-    >>> (x_train, y_train), (x_test, y_test) = keras.datasets.mnist.load_data()
+    >>> (x_train, y_train), (x_test, y_test) = uncertainty_rejection.datasets.load_notmnist_data()
     assert x_train.shape == (529114, 28, 28)
     assert x_test.shape == (18724, 28, 28)
     assert y_train.shape == (529114,)

@@ -143,3 +143,6 @@ dmypy.json
 
 # example datasets
 docs/*.npy
+
+# examples
+src/uncertainty_rejection/create_examples.ipynb
