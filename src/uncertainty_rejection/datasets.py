@@ -10,7 +10,6 @@
 # standard library imports
 import os
 import logging
-# import urllib
 import urllib.request
 import urllib.error
 # related third party imports
