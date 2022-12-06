@@ -10,7 +10,9 @@
 # standard library imports
 import os
 import logging
-import urllib
+# import urllib
+import urllib.request
+import urllib.error
 # related third party imports
 import numpy as np
 # local application/library specific imports
