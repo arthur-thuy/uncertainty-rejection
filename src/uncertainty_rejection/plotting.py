@@ -72,7 +72,7 @@ def hist_unc_base(unc_ary, bins=20, ax=None, xlim=None, vline=True, hist_kwargs=
     return ax
 
 
-def hist_unc_plot1(unc_ary, idx=None, bins=20, ax=None, unc_type=None, num_classes=None,
+def hist_unc_plot1(unc_ary, unc_type, idx=None, bins=20, ax=None, num_classes=None,
                 bars_scale=False, save=False, hist_kwargs=None, axvline_kwargs=None,
                 savefig_kwargs=None):
     """Plot histogram of some uncertainty metric and return plot.
@@ -111,9 +111,11 @@ def hist_unc_plot1(unc_ary, idx=None, bins=20, ax=None, unc_type=None, num_class
         Figure saving properties.
         Default: None
     """
-    unc_types = ['TU', 'AU', 'EU', 'Conf', None]
+    unc_types = ['TU', 'AU', 'EU', 'Conf']
     if unc_type not in unc_types:
         raise ValueError("Invalid uncertainty type. Expected one of: %s" % unc_types)
+    if (unc_type in ['TU', 'AU', 'EU']) and (num_classes is None):
+        raise ValueError("`num_classes` argument is required for entropy-based uncertainties.")
 
     if idx is not None:
         unc_ary, *_ = subset_ary(idx, unc_ary)
@@ -142,10 +144,10 @@ def hist_unc_plot1(unc_ary, idx=None, bins=20, ax=None, unc_type=None, num_class
     if save:
         plt.tight_layout()
         plt.savefig(**savefig_kwargs)
-    plt.show()
+    return out_ax
 
 
-def hist_unc_plot3(unc_tot, unc_ale, unc_epi, idx=None, bins=20, num_classes=None, bars_scale=False,
+def hist_unc_plot3(unc_tot, unc_ale, unc_epi, num_classes, idx=None, bins=20, bars_scale=False,
             save=False, hist_kwargs=None, axvline_kwargs=None, savefig_kwargs=None):
     """Plot uncertainty hist for 3 types of uncertainty and return plot.
 
@@ -163,9 +165,8 @@ def hist_unc_plot3(unc_tot, unc_ale, unc_epi, idx=None, bins=20, num_classes=Non
     bins : int, optional
         Number of bins.
         Default: 20
-    num_classes : int, optional
-        Number of output classes. Used to adjust the xlim for entropy-based uncertainties.
-        Default: None
+    num_classes : int
+        Number of output classes (integer > 0). Used to adjust the xlim for entropy-based uncertainties.
     bars_scale : bool, optional
         Whether to adjust bar width to full xlim.
         Default: False
@@ -184,6 +185,8 @@ def hist_unc_plot3(unc_tot, unc_ale, unc_epi, idx=None, bins=20, num_classes=Non
     """
     if idx is not None:
         unc_tot, unc_ale, unc_epi, *_ = subset_ary(idx, unc_tot, unc_ale, unc_epi)
+    if isinstance(num_classes, int) and (num_classes <= 0):
+        raise ValueError("`num_classes` should be an integer > 0.")
     hist_kwargs, axvline_kwargs, savefig_kwargs, *_ = kwargs_to_dict(hist_kwargs, axvline_kwargs,
                                                                      savefig_kwargs)
     if num_classes is not None:
@@ -210,7 +213,7 @@ def hist_unc_plot3(unc_tot, unc_ale, unc_epi, idx=None, bins=20, num_classes=Non
     if save:
         plt.tight_layout()
         plt.savefig(**savefig_kwargs)
-    plt.show()
+    return axes
 
 
 def count_unc_base(unc_ary, space_bins=20, ax=None, **plt_kwargs):
@@ -244,7 +247,7 @@ def count_unc_base(unc_ary, space_bins=20, ax=None, **plt_kwargs):
     return ax
 
 
-def count_unc_plot1(unc_ary, unc_type=None, idx=None, space_bins=20, save=False, plt_kwargs=None,
+def count_unc_plot1(unc_ary, unc_type, idx=None, space_bins=20, save=False, plt_kwargs=None,
                     savefig_kwargs=None):
     """Plot count vs confidence and return plot.
 
@@ -290,7 +293,7 @@ def count_unc_plot1(unc_ary, unc_type=None, idx=None, space_bins=20, save=False,
     if save:
         plt.tight_layout()
         plt.savefig(**savefig_kwargs)
-    plt.show()
+    return out_ax
 
 
 def rejection_base(y_true_label, y_pred_stack, unc_ary, metric, unc_type, relative=True, seed=44,
@@ -447,8 +450,7 @@ def rejection_setmetric_plot1(y_true_label, y_pred_stack, unc_ary, metric, unc_t
     if save:
         plt.tight_layout()
         plt.savefig(**savefig_kwargs)
-    plt.show()
-
+    return out_ax
 
 def rejection_setmetric_plot3(y_true_label, y_pred_stack, unc_tot, unc_ale, unc_epi,
                               metric, unc_type, idx=None, relative=True, seed=44, space_start=0.001,
@@ -536,7 +538,7 @@ def rejection_setmetric_plot3(y_true_label, y_pred_stack, unc_tot, unc_ale, unc_
     if save:
         plt.tight_layout()
         plt.savefig(**savefig_kwargs)
-    plt.show()
+    return axes
 
 
 def rejection_mixmetric_plot3(y_true_label, y_pred_stack, unc_ary, unc_type, idx=None,
@@ -612,4 +614,4 @@ def rejection_mixmetric_plot3(y_true_label, y_pred_stack, unc_ary, unc_type, idx
     if save:
         plt.tight_layout()
         plt.savefig(**savefig_kwargs)
-    plt.show()
+    return axes
