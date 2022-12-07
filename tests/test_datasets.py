@@ -11,11 +11,13 @@
 # related third party imports
 import numpy as np
 import pytest
+import urllib.error
 # local application/library specific imports
 from uncertainty_rejection.datasets import (
     load_mnist_data,
     load_notmnist_data,
-    load_example_predictions
+    load_example_predictions,
+    get_file
 )
 
 # pylint: disable=missing-function-docstring, missing-class-docstring, redefined-outer-name
@@ -42,4 +44,13 @@ class TestLoadExamplePredictions:
         assert y_stack_all.shape == (28724, 128, 10)
         assert y_mean_all.shape == (28724, 10)
         assert y_label_all.shape == (28724,)
+
+class TestGetFile:
+    def test_error1(self):
+        with pytest.raises(ValueError):
+            get_file(origin="invalid_path", fname=None)
+
+    def test_error2 (self):
+        with pytest.raises(Exception):
+            get_file(origin="invalid_origin", fname="invalid_fname")
         
