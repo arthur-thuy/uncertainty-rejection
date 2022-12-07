@@ -49,13 +49,8 @@ def get_file(origin, fname=None, cache_dir=None):
     Raises
     ------
     ValueError
-        If `origin` argument is not provided.
+        If `fname` argument is not provided and cannot be inferred from `origin`.
     """
-    if origin is None:
-        raise ValueError(
-            'Please specify the "origin" argument (URL of the file '
-            'to download).'
-        )
     if cache_dir is None:
         cache_dir = os.path.join(os.path.expanduser("~"), ".uncertainty_rejection")
     datadir_base = os.path.expanduser(cache_dir)
