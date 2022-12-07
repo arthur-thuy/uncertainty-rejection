@@ -2,6 +2,17 @@
 
 <!--next-version-placeholder-->
 
+## v0.2.0 (07/12/2022)
+
+### Feat
+
+- remove `seed_everything` function
+- add `datasets` module
+
+### Test
+
+- add tests for `utils`, `plotting` and `datasets` modules
+
 ## v0.1.1 (24/11/2022)
 
 ### Build
