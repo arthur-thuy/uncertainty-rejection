@@ -278,14 +278,13 @@ def count_unc_plot1(unc_ary, unc_type, idx=None, space_bins=20, save=False, plt_
     ValueError
         If `unc_type` is invalid.
     """
-    if idx is not None:
-        unc_ary, *_ = subset_ary(idx, unc_ary)
-    plt_kwargs, savefig_kwargs, *_ = kwargs_to_dict(plt_kwargs, savefig_kwargs)
     unc_types = ['TU', 'AU', 'EU', 'Conf']
     if unc_type not in unc_types:
         raise ValueError(
             "Invalid uncertainty type. Expected one of: %s" % unc_types)
-    plt.figure()
+    if idx is not None:
+        unc_ary, *_ = subset_ary(idx, unc_ary)
+    plt_kwargs, savefig_kwargs, *_ = kwargs_to_dict(plt_kwargs, savefig_kwargs)
     out_ax = count_unc_base(unc_ary, space_bins, **plt_kwargs)
     out_ax.set(title=f'Count vs {unc_type}', xlabel=f'Uncertainty {unc_type} u',
                ylabel=f'Number of observations {unc_type} >= u', ylim=(0, None))
@@ -453,7 +452,7 @@ def rejection_setmetric_plot1(y_true_label, y_pred_stack, unc_ary, metric, unc_t
     return out_ax
 
 def rejection_setmetric_plot3(y_true_label, y_pred_stack, unc_tot, unc_ale, unc_epi,
-                              metric, unc_type, idx=None, relative=True, seed=44, space_start=0.001,
+                              metric, idx=None, relative=True, seed=44, space_start=0.001,
                               space_stop=0.99, space_bins=100, save=False, savefig_kwargs=None,
                               plt_kwargs=None):
     """Plot 1 metric based on 3 uncertainties for varying rejection percentage and return 3 plots.
@@ -472,8 +471,6 @@ def rejection_setmetric_plot3(y_true_label, y_pred_stack, unc_tot, unc_ale, unc_
         1D ndarray (`float` type) containing epistemic uncertainty values.
     metric : {'nra', 'cq', 'rq'}
         Metric to calculate.
-    unc_type : {'TU', 'AU', 'EU', 'Conf'}
-        Type of uncertainty values.
     idx : ndarray, optional
         1D array (`int` type) containing indices of test subset.
         Default: None
@@ -505,18 +502,16 @@ def rejection_setmetric_plot3(y_true_label, y_pred_stack, unc_tot, unc_ale, unc_
     Raises
     ------
     ValueError
-        If `unc_type` is invalid.
+        If `metric` is invalid.
     """
-    unc_types = ['TU', 'AU', 'EU', 'Conf']
-    if unc_type not in unc_types:
-        raise ValueError("Invalid uncertainty type. Expected one of: %s" % unc_types)
-    if unc_type == 'Conf':
-        unc_ary = (1. - unc_ary)
+    metrics = ["nra", "cq", "rq"]
+    if metric not in metrics:
+        raise ValueError("Invalid metric. Expected one of: %s" % metrics)
     if idx is not None:
         y_true_label, y_pred_stack, unc_tot, unc_ale, unc_epi, *_ = subset_ary(idx, y_true_label,
                                                                             y_pred_stack, unc_tot,
                                                                             unc_ale, unc_epi)
-
+    unc_type = "TU"
     plt_kwargs, savefig_kwargs, *_ = kwargs_to_dict(plt_kwargs, savefig_kwargs)
     _, axes = plt.subplots(ncols=3, figsize=(20, 4))
     rejection_base(y_true_label, y_pred_stack, unc_tot, metric, unc_type, relative, seed, space_start,
