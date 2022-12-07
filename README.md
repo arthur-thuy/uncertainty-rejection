@@ -1,9 +1,8 @@
 # uncertainty-rejection
 
-<img src="https://drive.google.com/uc?export=download&id=1No_vocrpbVHNGP0DeyIGKYEujd-s5URR" alt="uncertainty-rejection" height="300"/>
-<img src="https://drive.google.com/file/d/1No_vocrpbVHNGP0DeyIGKYEujd-s5URR/view?usp=sharing" alt="uncertainty-rejection" height="300"/>
-<img src="https://i.postimg.cc/k4dcSmQ9/logo-uncertainty-rejection-drawio.png" alt="uncertainty-rejection" height="300"/>
-[![logo-uncertainty-rejection-drawio.png](https://i.postimg.cc/k4dcSmQ9/logo-uncertainty-rejection-drawio.png)](https://postimg.cc/2q2hpg9X)
+<p align="center">
+<img src="https://lh6.googleusercontent.com/XJa_jh9uJkPFTUff4YzeRPRq-3k3A_LXkSw68t1SAgJUhRL9QUmkhZUCIZwTRNccZnM=w2400" height="100"/>
+</p>
 
 <p align="center">
 <a href="https://pypi.org/project/uncertainty-rejection/">
