@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "uncertainty_rejection"
-version = "0.1.1"
+version = "0.2.0"
 description = "Analysis of uncertainty estimates for classification with rejection."
 authors = ["Arthur Thuy <arthur.thuy@ugent.be>"]
 maintainers = ["Arthur Thuy <arthur.thuy@ugent.be>"]
