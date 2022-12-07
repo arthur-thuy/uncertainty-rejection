@@ -2,7 +2,7 @@
 
 <img src="https://drive.google.com/uc?export=download&id=1No_vocrpbVHNGP0DeyIGKYEujd-s5URR" alt="uncertainty-rejection" height="300"/>
 <img src="https://drive.google.com/file/d/1No_vocrpbVHNGP0DeyIGKYEujd-s5URR/view?usp=sharing" alt="uncertainty-rejection" height="300"/>
-<img src="https://postimg.cc/2q2hpg9X" alt="uncertainty-rejection" height="300"/>
+<img src="https://i.postimg.cc/k4dcSmQ9/logo-uncertainty-rejection-drawio.png" alt="uncertainty-rejection" height="300"/>
 [![logo-uncertainty-rejection-drawio.png](https://i.postimg.cc/k4dcSmQ9/logo-uncertainty-rejection-drawio.png)](https://postimg.cc/2q2hpg9X)
 
 <p align="center">
