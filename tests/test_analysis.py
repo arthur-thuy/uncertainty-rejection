@@ -259,7 +259,7 @@ class TestComputeMetricsRej:
     )
     def test_unit(self, y_true_label, y_pred_label, unc_ary, threshold, relative, metrics_rej, use_idx):
         if use_idx:
-            idx = np.arange(len(y_true_label))
+            idx = np.arange(y_true_label.shape[0])
         else:
             idx = None
         actual_nonrej_acc, actual_class_quality, actual_rej_quality = \
