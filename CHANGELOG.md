@@ -4,12 +4,12 @@
 
 ## v0.2.0 (07/12/2022)
 
-### Feat
+### Feature
 
 - remove `seed_everything` function
 - add `datasets` module
 
-### Test
+### Tests
 
 - add tests for `utils`, `plotting` and `datasets` modules
 
