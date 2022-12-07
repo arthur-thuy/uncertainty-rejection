@@ -14,6 +14,11 @@ import numpy as np
 from tabulate import tabulate
 from scipy.stats import entropy
 
+# local application/library specific imports
+from uncertainty_rejection.utils import (
+    subset_ary
+)
+
 
 def get_y_mean_label(y_pred_stack):
     """Compute mean predicted probabilities for all classes and predicted label.
@@ -331,9 +336,7 @@ def compute_metrics_rej(threshold, y_true_label, y_pred_label, unc_ary, idx=None
         - see: `Condessa et al. (2017) <https://doi.org/10.1016/j.patcog.2016.10.011>`_
     """
     if idx is not None:
-        y_true_label = y_true_label[idx]
-        y_pred_label = y_pred_label[idx]
-        unc_ary = unc_ary[idx]
+        y_true_label, y_pred_label, unc_ary, *_ = subset_ary(idx, y_true_label, y_pred_label, unc_ary)
     n_cor_rej, n_cor_nonrej, n_incor_rej, n_incor_nonrej = confusion_matrix_rej(
         y_true_label, y_pred_label, unc_ary, threshold=threshold, show=show, relative=relative,
         seed=seed)

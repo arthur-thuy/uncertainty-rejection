@@ -18,6 +18,7 @@ from uncertainty_rejection.analysis import (
     load_predictions,
     compute_uncertainty,
     compute_confidence,
+    concat_get_idx,
     get_idx_correct,
     confusion_matrix_rej,
     compute_metrics_rej,
@@ -26,6 +27,7 @@ from uncertainty_rejection.analysis import (
 
 # run with: `python3 -m pytest -v` from within src folder
 # pylint: disable=missing-function-docstring, missing-class-docstring, redefined-outer-name
+
 
 @pytest.fixture
 def pos_probs():
@@ -59,6 +61,26 @@ def unc_ary():
     return np.array([0.2, 0.8, 0.4, 0.6, 0.5])
 
 
+# @pytest.fixture
+# def compute_metrics_rej_params():
+#     compute_metrics_rej_params = [(False, 0.45, (1.0, 0.8, 3.0)),
+#                                   (False, 0.1, (0.0, 0.4, 1.0)),
+#                                   (False, 0.9, (0.6, 0.6, 1.0)),
+#                                   (True, 0.45, (1.0, 0.8, 3.0)),
+#                                   (True, 0.1, (0.75, 0.8, np.inf)),
+#                                   (True, 0.9, (0.0, 0.4, 1.0))]
+#     return compute_metrics_rej_params
+
+compute_metrics_rej_params = [
+            (False, 0.45, (1.0, 0.8, 3.0)),
+            (False, 0.1, (0.0, 0.4, 1.0)),
+            (False, 0.9, (0.6, 0.6, 1.0)),
+            (True, 0.45, (1.0, 0.8, 3.0)),
+            (True, 0.1, (0.75, 0.8, np.inf)),
+            (True, 0.9, (0.0, 0.4, 1.0))
+        ]
+
+
 def test_get_pos_neg_probs(pos_probs, y_stack):
     actual = get_pos_neg_probs(pos_probs)
     expected = y_stack
@@ -82,16 +104,42 @@ class TestGetYMeanLabel:
             get_y_mean_label(pos_probs)
 
 
-def test_load_predictions():
-    y_stack, y_mean, y_label = load_predictions("tests/preds.npy")
+class TestLoadPredictions:
+    def test_unit_mulsamples(self):
+        y_stack, y_mean, y_label = load_predictions(
+            "tests/preds_mulsamples.npy")
 
-    assert isinstance(y_stack, np.ndarray), "`y_stack` should be a np.ndarray"
-    assert isinstance(y_mean, np.ndarray), "`y_mean` should be a np.ndarray"
-    assert isinstance(y_label, np.ndarray), "`y_label` should be a np.ndarray"
+        assert isinstance(
+            y_stack, np.ndarray), "`y_stack` should be a np.ndarray"
+        assert isinstance(
+            y_mean, np.ndarray), "`y_mean` should be a np.ndarray"
+        assert isinstance(
+            y_label, np.ndarray), "`y_label` should be a np.ndarray"
 
-    assert y_stack.ndim == 3, f"`y_stack` should have 3 dimensions, is rank {y_stack.ndim}"
-    assert y_mean.ndim == 2, f"y_mean should be a tensor of rank 2, is rank {y_mean.ndim}"
-    assert y_label.ndim == 1, f"y_label should be a tensor of rank 1, is rank {y_label.ndim}"
+        assert y_stack.shape == (
+            2, 3, 2), f"`y_stack` should have shape `(2,3,2)`, is shape {y_stack.shape}"
+        assert y_mean.shape == (
+            2, 2), f"y_mean should have shape `(2,2)`, is shape {y_mean.shape}"
+        assert y_label.shape == (
+            2,), f"y_label should have shape `(2,)`, is shape {y_label.shape}"
+
+    def test_unit_onesample(self):
+        y_stack, y_mean, y_label = load_predictions(
+            "tests/preds_onesample.npy")
+
+        assert isinstance(
+            y_stack, np.ndarray), "`y_stack` should be a np.ndarray"
+        assert isinstance(
+            y_mean, np.ndarray), "`y_mean` should be a np.ndarray"
+        assert isinstance(
+            y_label, np.ndarray), "`y_label` should be a np.ndarray"
+
+        assert y_stack.shape == (
+            2, 1, 2), f"`y_stack` should have shape `(2,1,2)`, is shape {y_stack.shape}"
+        assert y_mean.shape == (
+            2, 2), f"y_mean should have shape `(2,2)`, is shape {y_mean.shape}"
+        assert y_label.shape == (
+            2,), f"y_label should have shape `(2,)`, is shape {y_label.shape}"
 
 
 @pytest.mark.parametrize(
@@ -136,6 +184,24 @@ class TestComputeConfidence:
             compute_confidence(pos_probs)
 
 
+def test_concat_get_idx():
+    y_a = np.full((3,), 10)
+    y_b = np.full((3,), 20)
+    y_c = np.full((3,), 30)
+    y_true_all, idlist, idx_a, idx_b, idx_c, *_ = concat_get_idx(y_a, y_b, y_c)
+
+    np.testing.assert_allclose(
+        y_true_all, np.array([10, 10, 10, 20, 20, 20, 30, 30, 30]), err_msg='y_true_all computed incorrectly!')
+    np.testing.assert_allclose(
+        idlist, np.array([0, 0, 0, 1, 1, 1, 2, 2, 2]), err_msg='idlist computed incorrectly!')
+    np.testing.assert_allclose(
+        idx_a, np.array([0, 1, 2]), err_msg='idx_a computed incorrectly!')
+    np.testing.assert_allclose(
+        idx_b, np.array([3, 4, 5]), err_msg='idx_b computed incorrectly!')
+    np.testing.assert_allclose(
+        idx_c, np.array([6, 7, 8]), err_msg='idx_c computed incorrectly!')
+
+
 def test_get_idx_correct(y_true_label, y_pred_label):
     actual = get_idx_correct(y_true_label, y_pred_label)
     expected_idx_correct, expected_idx_incorrect = np.array(
@@ -175,30 +241,72 @@ class TestConfMatrixRej:
 
 class TestComputeMetricsRej:
     @pytest.mark.parametrize(
-        "relative, threshold, metrics_rej",
+        "relative, use_idx, threshold, metrics_rej",
         [
-            (False, 0.45, (1.0, 0.8, 3.0)),
-            (False, 0.1, (0.0, 0.4, 1.0)),
-            (False, 0.9, (0.6, 0.6, 1.0)),
-            (True, 0.45, (1.0, 0.8, 3.0)),
-            (True, 0.1, (0.75, 0.8, np.inf)),
-            (True, 0.9, (0.0, 0.4, 1.0))
+            (False, False, 0.45, (1.0, 0.8, 3.0)),
+            (False, False, 0.1, (0.0, 0.4, 1.0)),
+            (False, False, 0.9, (0.6, 0.6, 1.0)),
+            (True, False, 0.45, (1.0, 0.8, 3.0)),
+            (True, False, 0.1, (0.75, 0.8, np.inf)),
+            (True, False, 0.9, (0.0, 0.4, 1.0)),
+            (False, True, 0.45, (1.0, 0.8, 3.0)),
+            (False, True, 0.1, (0.0, 0.4, 1.0)),
+            (False, True, 0.9, (0.6, 0.6, 1.0)),
+            (True, True, 0.45, (1.0, 0.8, 3.0)),
+            (True, True, 0.1, (0.75, 0.8, np.inf)),
+            (True, True, 0.9, (0.0, 0.4, 1.0))
         ]
     )
-    def test_unit(self, y_true_label, y_pred_label, unc_ary, threshold, relative, metrics_rej):
+    def test_unit(self, y_true_label, y_pred_label, unc_ary, threshold, relative, metrics_rej, use_idx):
+        if use_idx:
+            idx = np.arange(len(y_true_label))
+        else:
+            idx = None
         actual_nonrej_acc, actual_class_quality, actual_rej_quality = \
             compute_metrics_rej(threshold, y_true_label,
-                                y_pred_label, unc_ary, relative=relative)
+                                y_pred_label, unc_ary, idx=idx, relative=relative)
         expected_nonrej_acc, expected_class_quality, expected_rej_quality = metrics_rej
         np.testing.assert_allclose(
-            actual_nonrej_acc, expected_nonrej_acc, \
-                err_msg=f"`nonrej_acc` should be {expected_nonrej_acc}, is {actual_nonrej_acc}.")
+            actual_nonrej_acc, expected_nonrej_acc,
+            err_msg=f"`nonrej_acc` should be {expected_nonrej_acc}, is {actual_nonrej_acc}.")
         np.testing.assert_allclose(
-            actual_class_quality, expected_class_quality, \
-                err_msg=f"`class_quality` should be {expected_class_quality}, is {actual_class_quality}.")
+            actual_class_quality, expected_class_quality,
+            err_msg=f"`class_quality` should be {expected_class_quality}, is {actual_class_quality}.")
         np.testing.assert_allclose(
-            actual_rej_quality, expected_rej_quality, \
-                err_msg=f"`rej_quality` should be {expected_rej_quality}, is {actual_rej_quality}.")
+            actual_rej_quality, expected_rej_quality,
+            err_msg=f"`rej_quality` should be {expected_rej_quality}, is {actual_rej_quality}.")
+
+    def test_unit_edge_nra(self):
+        y_true_label = np.array([0,1,1,0])
+        y_pred_label = np.array([0,1,1,1])
+        unc_ary = np.array([0.2, 0.15, 0.3, 0.7])
+        threshold = 0.1
+        nra, _, _ = compute_metrics_rej(threshold, y_true_label, y_pred_label, unc_ary, relative=False)
+        assert nra == 0.0, f"NRA should be 0.0 if all observations are rejected, is {nra}."
+
+    def test_unit_edge_cq(self):
+        y_true_label = np.array([])
+        y_pred_label = np.array([])
+        unc_ary = np.array([])
+        threshold = 0.1
+        _, cq, _ = compute_metrics_rej(threshold, y_true_label, y_pred_label, unc_ary, relative=False)
+        assert cq == 0.0, f"CQ should be 0.0 if there are no observations, is {cq}."
+
+    def test_unit_edge_rq1(self):
+        y_true_label = np.array([0,1,1,0])
+        y_pred_label = np.array([0,1,1,0])
+        unc_ary = np.array([0.2, 0.15, 0.3, 0.7])
+        threshold = 0.1
+        _, _, rq = compute_metrics_rej(threshold, y_true_label, y_pred_label, unc_ary, relative=False)
+        assert rq == np.inf, f"RQ should be inf if `n_cor_rej` = 0 and any sample is rejected, is {rq}."
+
+    def test_unit_edge_rq2(self):
+        y_true_label = np.array([0,1,1,0])
+        y_pred_label = np.array([0,1,1,0])
+        unc_ary = np.array([0.2, 0.15, 0.3, 0.7])
+        threshold = 0.9
+        _, _, rq = compute_metrics_rej(threshold, y_true_label, y_pred_label, unc_ary, relative=False)
+        assert rq == 1.0, f"RQ should be 1.0 if `n_cor_rej` = 0 and no samples are rejected, is {rq}."
 
 
 @pytest.mark.parametrize(
