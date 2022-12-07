@@ -1,4 +1,4 @@
-# uncertainty_rejection
+# uncertainty-rejection
 
 <p align="center">
 <a href="https://pypi.org/project/uncertainty-rejection/">
@@ -35,8 +35,8 @@ Interested in contributing? Check out the contributing guidelines. Please note t
 
 ## License
 
-`uncertainty_rejection` was created by Arthur Thuy. It is licensed under the terms of the Apache License 2.0 license.
+`uncertainty-rejection` was created by Arthur Thuy. It is licensed under the terms of the Apache License 2.0 license.
 
 ## Credits
 
-`uncertainty_rejection` was created with [`cookiecutter`](https://cookiecutter.readthedocs.io/en/latest/) and the `py-pkgs-cookiecutter` [template](https://github.com/py-pkgs/py-pkgs-cookiecutter).
+`uncertainty-rejection` was created with [`cookiecutter`](https://cookiecutter.readthedocs.io/en/latest/) and the `py-pkgs-cookiecutter` [template](https://github.com/py-pkgs/py-pkgs-cookiecutter).
