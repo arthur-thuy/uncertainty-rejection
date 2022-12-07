@@ -106,9 +106,26 @@ class TestHistUncBase:
 
 
 class TestHistUncPlot1:
-    def test_integration(self, unc_tot):
+    def test_integration1(self, unc_tot):
         ax = hist_unc_plot1(unc_tot, unc_type="TU", num_classes=10)
         assert isinstance(ax, matplotlib.axes.SubplotBase)
+
+    def test_integration2(self, conf):
+        ax = hist_unc_plot1(conf, unc_type="Conf", bars_scale=True)
+        assert isinstance(ax, matplotlib.axes.SubplotBase)
+
+    def test_integration3(self, conf):
+        idx = np.arange(conf.shape[0])
+        ax = hist_unc_plot1(conf, idx=idx, unc_type="Conf", bars_scale=True)
+        assert isinstance(ax, matplotlib.axes.SubplotBase)
+
+    def test_error1(self, unc_tot):
+        with pytest.raises(ValueError):
+            hist_unc_plot1(unc_tot, unc_type="test", num_classes=10)
+
+    def test_error2(self, unc_tot):
+        with pytest.raises(ValueError):
+            hist_unc_plot1(unc_tot, unc_type="TU", num_classes=None)
 
 
 class TestHistUncPlot3:
@@ -116,6 +133,16 @@ class TestHistUncPlot3:
         axes = hist_unc_plot3(unc_tot, unc_ale, unc_epi, num_classes=10)
         for ax in axes:
             assert isinstance(ax, matplotlib.axes.SubplotBase)
+
+    def test_integration2(self, unc_tot, unc_ale, unc_epi):
+        idx = np.arange(unc_tot.shape[0])
+        axes = hist_unc_plot3(unc_tot, unc_ale, unc_epi, num_classes=10, idx=idx, bars_scale=True)
+        for ax in axes:
+            assert isinstance(ax, matplotlib.axes.SubplotBase)
+
+    def test_error1(self, unc_tot):
+        with pytest.raises(ValueError):
+            hist_unc_plot3(unc_tot, unc_ale, unc_epi, num_classes=-1)
 
 
 class TestCountUncBase:
@@ -125,36 +152,95 @@ class TestCountUncBase:
 
 
 class TestCountUncPlot1:
-    def test_integration(self, unc_tot):
+    def test_integration1(self, unc_tot):
         ax = count_unc_plot1(unc_tot, unc_type="TU")
         assert isinstance(ax, matplotlib.axes.SubplotBase)
 
+    def test_integration2(self, unc_tot):
+        idx = np.arange(unc_tot.shape[0])
+        ax = count_unc_plot1(unc_tot, unc_type="TU", idx=idx)
+        assert isinstance(ax, matplotlib.axes.SubplotBase)
+
+    def test_error(self, unc_tot):
+        with pytest.raises(ValueError):
+            count_unc_plot1(unc_tot, unc_type="test")
+
 
 class TestRejectionBase:
-    def test_integration(self, y_true_all, y_stack, unc_tot):
+    def test_integration1(self, y_true_all, y_stack, unc_tot):
         ax = rejection_base(y_true_all, y_stack, unc_tot,
                             metric="nra", unc_type="TU")
         assert isinstance(ax, matplotlib.axes.SubplotBase)
 
+    def test_integration2(self, y_true_all, y_stack, unc_tot):
+        ax = rejection_base(y_true_all, y_stack, unc_tot,
+                            metric="nra", unc_type="TU", relative=False)
+        assert isinstance(ax, matplotlib.axes.SubplotBase)
+
+    def test_integration3(self, y_true_all, y_stack, conf):
+        ax = rejection_base(y_true_all, y_stack, conf,
+                            metric="nra", unc_type="TU", relative=False)
+        assert isinstance(ax, matplotlib.axes.SubplotBase)
+
+    def test_error(self, unc_tot):
+        with pytest.raises(ValueError):
+            rejection_base(y_true_all, y_stack, unc_tot,
+                            metric="nra", unc_type="test")
+
 
 class TestRejectionSetmetricPlot1:
-    def test_integration(self, y_true_all, y_stack, unc_tot):
+    def test_integration1(self, y_true_all, y_stack, unc_tot):
         ax = rejection_setmetric_plot1(
             y_true_all, y_stack, unc_tot, metric="nra", unc_type="TU")
         assert isinstance(ax, matplotlib.axes.SubplotBase)
 
+    def test_integration2(self, y_true_all, y_stack, conf):
+        idx = np.arange(conf.shape[0])
+        ax = rejection_setmetric_plot1(
+            y_true_all, y_stack, conf, metric="nra", unc_type="Conf", relative=False, idx=idx)
+        assert isinstance(ax, matplotlib.axes.SubplotBase)
+
+    def test_error(self, unc_tot):
+        with pytest.raises(ValueError):
+            rejection_setmetric_plot1(
+            y_true_all, y_stack, unc_tot, metric="nra", unc_type="test")
+
 
 class TestRejectionSetmetricPlot3:
-    def test_integration(self, y_true_all, y_stack, unc_tot, unc_ale, unc_epi):
+    def test_integration1(self, y_true_all, y_stack, unc_tot, unc_ale, unc_epi):
         axes = rejection_setmetric_plot3(y_true_all, y_stack, unc_tot, unc_ale, unc_epi,
-                                         metric="nra", unc_type="TU")
+                                         metric="nra")
         for ax in axes:
             assert isinstance(ax, matplotlib.axes.SubplotBase)
 
+    def test_integration2(self, y_true_all, y_stack, unc_tot, unc_ale, unc_epi):
+        idx = np.arange(unc_tot.shape[0])
+        axes = rejection_setmetric_plot3(y_true_all, y_stack, unc_tot, unc_ale, unc_epi,
+                                         metric="nra", idx=idx, relative=False)
+        for ax in axes:
+            assert isinstance(ax, matplotlib.axes.SubplotBase)
+
+    def test_error(self, unc_tot):
+        with pytest.raises(ValueError):
+            rejection_setmetric_plot3(y_true_all, y_stack, unc_tot, unc_ale, unc_epi,
+                                         metric="test")
+
 
 class TestRejectionMixmetricPlot3:
-    def test_integration(self, y_true_all, y_stack, unc_tot):
+    def test_integration1(self, y_true_all, y_stack, unc_tot):
         axes = rejection_mixmetric_plot3(
             y_true_all, y_stack, unc_tot, unc_type="TU")
         for ax in axes:
             assert isinstance(ax, matplotlib.axes.SubplotBase)
+
+    def test_integration2(self, y_true_all, y_stack, conf):
+        idx = np.arange(conf.shape[0])
+        axes = rejection_mixmetric_plot3(
+            y_true_all, y_stack, conf, unc_type="TU", idx=idx)
+        for ax in axes:
+            assert isinstance(ax, matplotlib.axes.SubplotBase)
+
+    def test_error(self, unc_tot):
+        with pytest.raises(ValueError):
+            rejection_mixmetric_plot3(
+            y_true_all, y_stack, unc_tot, unc_type="test")
