@@ -345,12 +345,12 @@ def compute_metrics_rej(threshold, y_true_label, y_pred_label, unc_ary, idx=None
     try:
         nonrej_acc = n_cor_nonrej / (n_incor_nonrej + n_cor_nonrej)
     except ZeroDivisionError:
-        nonrej_acc = 0.0
+        nonrej_acc = np.inf # invalid
     try:
         class_quality = (n_cor_nonrej + n_incor_rej) / \
             (n_cor_rej + n_cor_nonrej + n_incor_rej + n_incor_nonrej)
     except ZeroDivisionError:
-        class_quality = 0.0
+        class_quality = np.inf # invalid
     try:
         rej_quality = (n_incor_rej / n_cor_rej) / \
             ((n_incor_rej + n_incor_nonrej) / (n_cor_rej + n_cor_nonrej))

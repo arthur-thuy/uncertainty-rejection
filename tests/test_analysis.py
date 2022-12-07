@@ -244,17 +244,17 @@ class TestComputeMetricsRej:
         "relative, use_idx, threshold, metrics_rej",
         [
             (False, False, 0.45, (1.0, 0.8, 3.0)),
-            (False, False, 0.1, (0.0, 0.4, 1.0)),
+            (False, False, 0.1, (np.inf, 0.4, 1.0)),
             (False, False, 0.9, (0.6, 0.6, 1.0)),
             (True, False, 0.45, (1.0, 0.8, 3.0)),
             (True, False, 0.1, (0.75, 0.8, np.inf)),
-            (True, False, 0.9, (0.0, 0.4, 1.0)),
+            (True, False, 0.9, (np.inf, 0.4, 1.0)),
             (False, True, 0.45, (1.0, 0.8, 3.0)),
-            (False, True, 0.1, (0.0, 0.4, 1.0)),
+            (False, True, 0.1, (np.inf, 0.4, 1.0)),
             (False, True, 0.9, (0.6, 0.6, 1.0)),
             (True, True, 0.45, (1.0, 0.8, 3.0)),
             (True, True, 0.1, (0.75, 0.8, np.inf)),
-            (True, True, 0.9, (0.0, 0.4, 1.0))
+            (True, True, 0.9, (np.inf, 0.4, 1.0))
         ]
     )
     def test_unit(self, y_true_label, y_pred_label, unc_ary, threshold, relative, metrics_rej, use_idx):
@@ -282,7 +282,7 @@ class TestComputeMetricsRej:
         unc_ary = np.array([0.2, 0.15, 0.3, 0.7])
         threshold = 0.1
         nra, _, _ = compute_metrics_rej(threshold, y_true_label, y_pred_label, unc_ary, relative=False)
-        assert nra == 0.0, f"NRA should be 0.0 if all observations are rejected, is {nra}."
+        assert nra == np.inf, f"NRA should be inf if all observations are rejected, is {nra}."
 
     def test_unit_edge_cq(self):
         y_true_label = np.array([])
@@ -290,7 +290,7 @@ class TestComputeMetricsRej:
         unc_ary = np.array([])
         threshold = 0.1
         _, cq, _ = compute_metrics_rej(threshold, y_true_label, y_pred_label, unc_ary, relative=False)
-        assert cq == 0.0, f"CQ should be 0.0 if there are no observations, is {cq}."
+        assert cq == np.inf, f"CQ should be inf if there are no observations, is {cq}."
 
     def test_unit_edge_rq1(self):
         y_true_label = np.array([0,1,1,0])
