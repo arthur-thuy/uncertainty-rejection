@@ -5,7 +5,7 @@ authors:
   given-names: "Arthur"
   orcid: "https://orcid.org/0000-0001-9107-5646"
 title: "uncertainty-rejection"
-version: 0.1.1
-# doi: 10.5281/zenodo.1234
-date-released: 2022-11-24
+version: 0.2.0
+doi: 10.5281/zenodo.7409539
+date-released: 2022-12-07
 url: "https://github.com/arthur-thuy/uncertainty-rejection"
